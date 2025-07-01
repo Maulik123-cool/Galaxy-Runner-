@@ -5,6 +5,9 @@ Galaxy Runner is an action-packed, visually vibrant browser game that throws you
 
 ![image](https://github.com/user-attachments/assets/0a4693e3-584c-4eaf-b089-95cf16f253a8)
 
+Hosting this Game:
+https://maulik123-cool.github.io/Galaxy-Runner-/
+
 HOW TO PLAY THIS GAME!!
 
 Step 1: Open a Code Editor
