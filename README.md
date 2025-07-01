@@ -5,7 +5,7 @@ Galaxy Runner is an action-packed, visually vibrant browser game that throws you
 
 ![image](https://github.com/user-attachments/assets/0a4693e3-584c-4eaf-b089-95cf16f253a8)
 
-#DemoLink 
+# DemoLink 
 *There is a demolink so people can just press that to play the game, instead of following the steps. So it is a better option.
 
 HOW TO PLAY THIS GAME!!
