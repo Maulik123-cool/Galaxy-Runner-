@@ -19,11 +19,11 @@ Step 2: Create a Folder for the Game
 - I created a HTML, CSS and JS script paste all the code in the box and your game will run like on the top very easy :)
 
 Step 3: Run the Game
-Go to the folder GalaxyRunnerGame.
-Double-click the file index.html.
-It will open in your default web browser.
-The game should load and start immediately.
-You can move the blue square using the up and down arrow keys. Avoid the red obstacles and try to survive as long as possible.
-You should use the up and down arrow to play the game and beat my highshore which is 21 good luck:
+- Go to the folder GalaxyRunnerGame.
+- Double-click the file index.html.
+- It will open in your default web browser.
+- The game should load and start immediately.
+- You can move the blue square using the up and down arrow keys. Avoid the red obstacles and try to survive as long as possible.
+- You should use the up and down arrow to play the game and beat my highshore which is 21 good luck:
 
 
