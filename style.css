@@ -1,19 +1,13 @@
 body {
   margin: 0;
+  padding: 0;
+  background-color: black;
   overflow: hidden;
-  font-family: 'Segoe UI', sans-serif;
-  background: radial-gradient(ellipse at center, #0d0d0d 0%, #000000 100%);
-  color: white;
 }
 
 canvas {
   display: block;
-}
-
-#score {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  font-size: 24px;
-  z-index: 2;
+  margin: 0 auto;
+  background: radial-gradient(circle at center, #111 0%, #000 100%);
+  border: 2px solid white;
 }
