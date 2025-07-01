@@ -4,6 +4,7 @@ const ctx = canvas.getContext("2d");
 canvas.width = 800;
 canvas.height = 400;
 
+// Player setup
 let player = {
   x: 50,
   y: canvas.height - 60,
@@ -16,17 +17,20 @@ let player = {
   grounded: true
 };
 
+// Obstacle array and settings
 let obstacles = [];
 let frames = 0;
-let gameSpeed = 4;
+let gameSpeed = 5;
 let score = 0;
 let gameOver = false;
 
+// Draw player
 function drawPlayer() {
   ctx.fillStyle = player.color;
   ctx.fillRect(player.x, player.y, player.width, player.height);
 }
 
+// Spawn a new red obstacle
 function spawnObstacle() {
   const height = Math.random() * 30 + 20;
   obstacles.push({
@@ -38,6 +42,7 @@ function spawnObstacle() {
   });
 }
 
+// Draw and move obstacles
 function drawObstacles() {
   for (let obs of obstacles) {
     ctx.fillStyle = obs.color;
@@ -49,6 +54,7 @@ function drawObstacles() {
   obstacles = obstacles.filter(obs => obs.x + obs.width > 0);
 }
 
+// Apply gravity and jump
 function handlePlayerPhysics() {
   player.y += player.dy;
   player.dy += player.gravity;
@@ -60,6 +66,7 @@ function handlePlayerPhysics() {
   }
 }
 
+// Check for collisions
 function detectCollision() {
   for (let obs of obstacles) {
     if (
@@ -73,12 +80,14 @@ function detectCollision() {
   }
 }
 
+// Display score
 function drawScore() {
   ctx.fillStyle = "white";
   ctx.font = "20px sans-serif";
   ctx.fillText(`Score: ${score}`, 10, 30);
 }
 
+// Main game loop
 function update() {
   if (gameOver) {
     ctx.fillStyle = "white";
@@ -107,6 +116,7 @@ function update() {
   requestAnimationFrame(update);
 }
 
+// Controls
 window.addEventListener("keydown", (e) => {
   if (e.code === "Space" || e.code === "ArrowUp") {
     if (player.grounded) {
