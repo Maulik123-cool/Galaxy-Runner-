@@ -8,6 +8,6 @@ body {
 canvas {
   display: block;
   margin: 0 auto;
-  background: radial-gradient(circle at center, #111 0%, #000 100%);
+  background-color: black;
   border: 2px solid white;
 }
