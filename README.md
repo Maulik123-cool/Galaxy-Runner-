@@ -8,7 +8,7 @@ Galaxy Runner is an action-packed, visually vibrant browser game that throws you
 # DemoLink 
 *There is a demolink so people can just press that to play the game, instead of following the steps. So it is a better option.
 
-HOW TO PLAY THIS GAME!!
+# HOW TO PLAY THIS GAME!!
 
 Step 1: Open a Code Editor
 You can use any of the following:
