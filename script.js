@@ -1,110 +1,118 @@
-const canvas = document.getElementById('gameCanvas');
-const ctx = canvas.getContext('2d');
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+const canvas = document.getElementById("gameCanvas");
+const ctx = canvas.getContext("2d");
 
-let score = 0;
-let keys = {};
+canvas.width = 800;
+canvas.height = 400;
 
-const player = {
-  x: 100,
-  y: canvas.height / 2,
+let player = {
+  x: 50,
+  y: canvas.height - 60,
   width: 40,
   height: 40,
-  speed: 5,
-  color: '#00f2ff',
-  draw() {
-    ctx.fillStyle = this.color;
-    ctx.fillRect(this.x, this.y, this.width, this.height);
-  },
-  update() {
-    if (keys['ArrowUp']) this.y -= this.speed;
-    if (keys['ArrowDown']) this.y += this.speed;
-    this.y = Math.max(0, Math.min(this.y, canvas.height - this.height));
-  }
+  color: "cyan",
+  dy: 0,
+  gravity: 0.8,
+  jumpPower: -12,
+  grounded: true
 };
 
-class Obstacle {
-  constructor() {
-    this.x = canvas.width;
-    this.y = Math.random() * (canvas.height - 100);
-    this.width = 30;
-    this.height = Math.random() * 100 + 30;
-    this.speed = 6;
-    this.color = '#ff0055';
-  }
-  draw() {
-    ctx.fillStyle = this.color;
-    ctx.fillRect(this.x, this.y, this.width, this.height);
-  }
-  update() {
-    this.x -= this.speed;
-    this.draw();
-  }
-}
-
 let obstacles = [];
-let frame = 0;
+let frames = 0;
+let gameSpeed = 4;
+let score = 0;
+let gameOver = false;
+
+function drawPlayer() {
+  ctx.fillStyle = player.color;
+  ctx.fillRect(player.x, player.y, player.width, player.height);
+}
+
 function spawnObstacle() {
-  if (frame % 60 === 0) obstacles.push(new Obstacle());
+  const height = Math.random() * 30 + 20;
+  obstacles.push({
+    x: canvas.width,
+    y: canvas.height - height,
+    width: 20,
+    height: height,
+    color: "red"
+  });
 }
 
-function updateScore() {
-  score++;
-  document.getElementById('score').innerText = `Score: ${score}`;
+function drawObstacles() {
+  for (let obs of obstacles) {
+    ctx.fillStyle = obs.color;
+    ctx.fillRect(obs.x, obs.y, obs.width, obs.height);
+    obs.x -= gameSpeed;
+  }
+
+  obstacles = obstacles.filter(obs => obs.x + obs.width > 0);
 }
 
-function detectCollision(player, obs) {
-  return (
-    player.x < obs.x + obs.width &&
-    player.x + player.width > obs.x &&
-    player.y < obs.y + obs.height &&
-    player.y + player.height > obs.y
-  );
+function handlePlayerPhysics() {
+  player.y += player.dy;
+  player.dy += player.gravity;
+
+  if (player.y + player.height >= canvas.height) {
+    player.y = canvas.height - player.height;
+    player.dy = 0;
+    player.grounded = true;
+  }
 }
 
-function gameOver() {
-  ctx.fillStyle = 'rgba(0,0,0,0.7)';
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-  ctx.fillStyle = 'white';
-  ctx.font = '48px sans-serif';
-  ctx.fillText('Game Over!', canvas.width / 2 - 120, canvas.height / 2);
-  cancelAnimationFrame(animationId);
+function detectCollision() {
+  for (let obs of obstacles) {
+    if (
+      player.x < obs.x + obs.width &&
+      player.x + player.width > obs.x &&
+      player.y < obs.y + obs.height &&
+      player.y + player.height > obs.y
+    ) {
+      gameOver = true;
+    }
+  }
 }
 
-let animationId;
-function animate() {
-  animationId = requestAnimationFrame(animate);
+function drawScore() {
+  ctx.fillStyle = "white";
+  ctx.font = "20px sans-serif";
+  ctx.fillText(`Score: ${score}`, 10, 30);
+}
+
+function update() {
+  if (gameOver) {
+    ctx.fillStyle = "white";
+    ctx.font = "40px sans-serif";
+    ctx.fillText("Game Over!", canvas.width / 2 - 100, canvas.height / 2);
+    ctx.font = "20px sans-serif";
+    ctx.fillText("Refresh to restart", canvas.width / 2 - 70, canvas.height / 2 + 30);
+    return;
+  }
+
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  player.update();
-  player.draw();
+  drawPlayer();
+  handlePlayerPhysics();
 
-  spawnObstacle();
-  obstacles.forEach((obs, index) => {
-    obs.update();
-    if (obs.x + obs.width < 0) {
-      obstacles.splice(index, 1);
-      updateScore();
-    }
-    if (detectCollision(player, obs)) {
-      gameOver();
-    }
-  });
+  if (frames % 90 === 0) {
+    spawnObstacle();
+  }
 
-  frame++;
+  drawObstacles();
+  detectCollision();
+  drawScore();
+
+  score++;
+  frames++;
+  requestAnimationFrame(update);
 }
 
-animate();
+window.addEventListener("keydown", (e) => {
+  if (e.code === "Space" || e.code === "ArrowUp") {
+    if (player.grounded) {
+      player.dy = player.jumpPower;
+      player.grounded = false;
+    }
+  }
+});
 
-window.addEventListener('keydown', e => {
-  keys[e.key] = true;
-});
-window.addEventListener('keyup', e => {
-  keys[e.key] = false;
-});
-
-window.addEventListener('resize', () => {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-});
+update();
